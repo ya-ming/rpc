@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+<beans>
+    <!-- remote service for the client to call -->
+    <bean id="userRmiServiceProxy" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
+        <!-- target url for the service -->
+        <property name="serviceUrl" value="rmi://127.0.0.1:1199/userRmiService"/>
+        <!-- target interface for the service -->
+        <property name="serviceInterface" value="rpc.common.UserService"/>
+    </bean>
+</beans>
