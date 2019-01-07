@@ -5,7 +5,7 @@ import yaming.rpc.framework.model.ProviderService;
 import java.util.List;
 import java.util.Map;
 
-public interface IRegistercenter4Provider {
+public interface IRegisterCenter4Provider {
     /**
      * server side. register service provider to the zookeeper node
      * @param serviceMetaData

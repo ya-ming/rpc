@@ -10,7 +10,7 @@ public interface IRegisterCenter4Invoker {
     /**
      * client side. init the local cache of service provider
      */
-    public void initProviderMap();
+    public void initProviderMap(String remoteAppKey, String groupName);
 
     /**
      * client side. retrieve the information of service provider

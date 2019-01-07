@@ -6,6 +6,7 @@ public class InvokerService {
     private Class<?> serviceItf;
     private Object serviceObject;
     private Method serviceMethod;
+    private String invokerIp;
     private int invokerPort;
     private long timeout;
     private String remoteAppKey;
@@ -33,6 +34,14 @@ public class InvokerService {
 
     public void setServiceMethod(Method serviceMethod) {
         this.serviceMethod = serviceMethod;
+    }
+
+    public String getInvokerIp() {
+        return invokerIp;
+    }
+
+    public void setInvokerIp(String invokerIp) {
+        this.invokerIp = invokerIp;
     }
 
     public int getInvokerPort() {
