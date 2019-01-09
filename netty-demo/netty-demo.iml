@@ -9,8 +9,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Bundled Protobuf Distribution" level="application" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.1.8.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.marshalling:jboss-marshalling-serial:2.0.0.Beta2" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.marshalling:jboss-marshalling:2.0.0.Beta2" level="project" />
     <orderEntry type="library" name="Maven: com.caucho:hessian:4.0.38" level="project" />
