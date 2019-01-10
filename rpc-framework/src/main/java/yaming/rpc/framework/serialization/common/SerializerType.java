@@ -2,7 +2,7 @@ package yaming.rpc.framework.serialization.common;
 
 import org.apache.commons.lang.StringUtils;
 
-public enum SerializeType {
+public enum SerializerType {
     DefaultJavaSerializer("DefaultJavaSerializer"),
     HessianSerializer("HessianSerializer"),
     JSONSerializer("JSONSerializer"),
@@ -16,17 +16,17 @@ public enum SerializeType {
 
     private String serializeType;
 
-    private SerializeType(String serializeType) {
+    private SerializerType(String serializeType) {
         this.serializeType = serializeType;
     }
 
 
-    public static SerializeType queryByType(String serializeType) {
+    public static SerializerType queryByType(String serializeType) {
         if (StringUtils.isBlank(serializeType)) {
             return null;
         }
 
-        for (SerializeType serialize : SerializeType.values()) {
+        for (SerializerType serialize : SerializerType.values()) {
             if (StringUtils.equals(serializeType, serialize.getSerializeType())) {
                 return serialize;
             }

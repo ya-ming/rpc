@@ -6,6 +6,6 @@ public class PropertyConfigHelperTest {
         System.out.println("zookeeper session timeout value: " + PropertyConfigHelper.getZkSessionTimeout());
         System.out.println("zookeeper connection timeout value: " + PropertyConfigHelper.getZkConnectionTimeout());
         System.out.println("number of netty connections provided by each service provider: " + PropertyConfigHelper.getChannelConnectSize());
-        System.out.println("type of serializer: " + PropertyConfigHelper.getSerializeType());
+        System.out.println("type of serializer: " + PropertyConfigHelper.getSerializerType());
     }
 }

@@ -1,6 +1,6 @@
 package yaming.rpc.framework.helper;
 
-import yaming.rpc.framework.serialization.common.SerializeType;
+import yaming.rpc.framework.serialization.common.SerializerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class PropertyConfigHelper {
     // zookeeper connection timeout value
     private static int zkConnectionTimeout;
     // type of serializer
-    private static SerializeType serializeType;
+    private static SerializerType serializerType;
     // number of netty connections provided by each service provider
     private static int channelConnectSize;
 
@@ -43,9 +43,9 @@ public class PropertyConfigHelper {
             zkConnectionTimeout = Integer.parseInt(properties.getProperty("zk_connectionTimeout", "500"));
             channelConnectSize = Integer.parseInt(properties.getProperty("channel_connect_size", "10"));
             String seriType = properties.getProperty("serialize_type");
-            serializeType = SerializeType.queryByType(seriType);
-            if (serializeType == null) {
-                throw new RuntimeException("serializeType is null");
+            serializerType = SerializerType.queryByType(seriType);
+            if (serializerType == null) {
+                throw new RuntimeException("serializerType is null");
             }
 
         } catch (Throwable t) {
@@ -79,7 +79,7 @@ public class PropertyConfigHelper {
         return channelConnectSize;
     }
 
-    public static SerializeType getSerializeType() {
-        return serializeType;
+    public static SerializerType getSerializerType() {
+        return serializerType;
     }
 }
