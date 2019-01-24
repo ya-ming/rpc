@@ -81,6 +81,4 @@ public class NettyServer {
     public static NettyServer singleton() {
         return nettyServer;
     }
-    }
-
 }

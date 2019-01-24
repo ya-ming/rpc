@@ -3,7 +3,7 @@ package demo.factorybean;
 import demo.model.User;
 import org.springframework.beans.factory.FactoryBean;
 
-public class UserFacotryBean implements FactoryBean<User> {
+public class UserFactoryBean implements FactoryBean<User> {
     private static final User user = new User();
 
     private String name;

@@ -3,7 +3,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <beans>
-        <bean id="user" class="demo.factorybean.UserFacotryBean">
+        <bean id="user" class="demo.factorybean.UserFactoryBean">
             <property name="name" value="user 1"/>
             <property name="email" value="user1@example.com"/>
         </bean>

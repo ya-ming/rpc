@@ -1,0 +1,43 @@
+@startuml
+
+class ProviderService
+
+class InvokerService
+
+class PropertyConfigHelper
+
+class RpcRequest
+
+class RpcResponse
+
+class NettyServer {
++ void start(final int port)
++ void stop()
+}
+
+class NettyDecoderHandler {
+}
+
+class NettyEncoderHandler {
+}
+
+class IRegisterCenter4Provider {
++ void registerProvider(final List<ProviderService> serviceMetaData)
++ Map<String, List<ProviderService>> getProviderServiceMap()
+}
+
+class NettyServerInvokeHandler {
++ void channelReadComplete(ChannelHandlerContext ctx)
++ exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest)
+}
+
+SimpleChannelInboundHandler <|-- NettyServerInvokeHandler
+
+NettyServerInvokeHandler <|.. NettyServer
+RpcRequest <|.. NettyServer
+NettyDecoderHandler <|.. NettyServer
+NettyEncoderHandler <|.. NettyServer
+
+
+@enduml
