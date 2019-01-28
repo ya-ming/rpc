@@ -71,7 +71,7 @@ public class NettyChannelPoolFactory {
             socketAddressSet.add(socketAddress);
         }
 
-        //根据服务提供者地址列表初始化Channel阻塞队列,并以地址为Key,地址对应的Channel阻塞队列为value,存入channelPoolMap
+        // create Netty Channel for each service provider
         // create blocking queue based on the address of the service provider
         // store the blocking into channelPoolMap
         // Key: address
@@ -183,9 +183,11 @@ public class NettyChannelPoolFactory {
                 public void operationComplete(ChannelFuture future) throws Exception {
                     // if channel created successfully, set isSuccessHolder to true
                     if (future.isSuccess()) {
+                        System.out.println("NettyChannelPoolFactory::registerChannel" + "success");
                         isSuccessHolder.add(Boolean.TRUE);
                     } else {
                         // otherwise, set isSuccessHolder = false
+                        System.out.println("NettyChannelPoolFactory::registerChannel" + "fail");
                         future.cause().printStackTrace();
                         isSuccessHolder.add(Boolean.FALSE);
                     }

@@ -54,6 +54,7 @@ public class NettyServer {
                     });
             try {
                 channel = serverBootstrap.bind(port).sync().channel();
+                System.out.println("NettyServer started");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

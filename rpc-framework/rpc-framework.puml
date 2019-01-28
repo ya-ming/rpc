@@ -1,19 +1,98 @@
 @startuml
 
-class ProviderService
-
-class InvokerService
-
-class PropertyConfigHelper
-
-class RpcRequest
-
-class RpcResponse
-
-class NettyServer {
-+ void start(final int port)
-+ void stop()
+package "Zookeeper" #DDDDDD {
+    class RegisterCenter
+    interface IRegisterCenter4Provider {
+    + void registerProvider(final List<ProviderService> serviceMetaData)
+    + Map<String, List<ProviderService>> getProviderServiceMap()
+    }
+    interface IRegisterCenter4Invoker {
+    + void initProviderMap(String remoteAppKey, String groupName)
+    + Map<String, List<ProviderService>> getServiceMetaDataMap4Consumer()
+    + void registerInvoker(final InvokerService invoker)
+    }
 }
+
+
+package "model" #DDDDDD {
+    class ProviderService
+
+    class InvokerService
+
+    class PropertyConfigHelper
+
+    class RpcRequest
+
+    class RpcResponse
+
+    class RpcResponseWrapper {
+    - BlockingQueue<RpcResponse> responseQueue
+    - long responseTime
+    }
+
+    RpcResponse <|.. RpcResponseWrapper
+}
+
+package "provider" #DDDDDD {
+    class NettyServer {
+    + void start(final int port)
+    + void stop()
+    }
+
+    class NettyServerInvokeHandler {
+    + void channelReadComplete(ChannelHandlerContext ctx)
+    + exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest)
+    }
+}
+
+package "Revoker" #DDDDDD {
+    class NettyChannelPoolFactory {
+    + void initChannelPoolFactory()
+    + ArrayBlockingQueue<Channel> acquire(InetSocketAddress socketAddress
+    + void release()
+    + Channel registerChannel(InetSocketAddress socketAddress)
+    }
+
+    class NettyClientInvokeHandler {
+
+    }
+
+    class RevokerProxyBeanFactory {
+    + Object invoke(Object proxy, Method method, Object[] args)
+    }
+
+    class RevokerResponseHolder {
+    + static void initResponseData(String requestUniqueKey)
+    + static void putResultValue(RpcResponse response)
+    + static RpcResponse getValue(String requestUniqueKey, long timeout)
+    }
+
+    class RevokerServiceCallable {
+    + RpcResponse call()
+    }
+}
+
+ProviderService <|.. RevokerProxyBeanFactory
+RpcRequest <|.. RevokerProxyBeanFactory
+RpcResponse <|.. RevokerProxyBeanFactory
+IRegisterCenter4Invoker <|.. RevokerProxyBeanFactory
+RegisterCenter <|.. RevokerProxyBeanFactory
+
+ProviderService <|.. NettyChannelPoolFactory
+RpcResponse <|.. NettyChannelPoolFactory
+NettyDecoderHandler <|.. NettyChannelPoolFactory
+NettyEncoderHandler <|.. NettyChannelPoolFactory
+NettyClientInvokeHandler <|.. NettyChannelPoolFactory
+
+SimpleChannelInboundHandler <|-- NettyClientInvokeHandler
+
+RpcResponse <|.. RevokerResponseHolder
+RpcResponseWrapper <|.. RevokerResponseHolder
+
+RpcRequest <|.. RevokerResponseHolder
+RpcResponse <|.. RevokerResponseHolder
+
 
 class NettyDecoderHandler {
 }
@@ -21,23 +100,18 @@ class NettyDecoderHandler {
 class NettyEncoderHandler {
 }
 
-class IRegisterCenter4Provider {
-+ void registerProvider(final List<ProviderService> serviceMetaData)
-+ Map<String, List<ProviderService>> getProviderServiceMap()
-}
 
-class NettyServerInvokeHandler {
-+ void channelReadComplete(ChannelHandlerContext ctx)
-+ exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest)
-}
+
+
+RpcRequest <|.. NettyServerInvokeHandler
+RpcResponse <|.. NettyServerInvokeHandler
 
 SimpleChannelInboundHandler <|-- NettyServerInvokeHandler
 
 NettyServerInvokeHandler <|.. NettyServer
-RpcRequest <|.. NettyServer
 NettyDecoderHandler <|.. NettyServer
 NettyEncoderHandler <|.. NettyServer
+
 
 
 @enduml

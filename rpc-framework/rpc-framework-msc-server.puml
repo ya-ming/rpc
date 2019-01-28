@@ -1,0 +1,41 @@
+@startuml
+== Initialization ==
+== Initialize Netty Server ==
+
+NettyServerTest -> NettyServer: singleton().start(Integer.parseInt("8801"))
+create NioEventLoopGroup
+NettyServer -> NioEventLoopGroup: bossGroup = new
+create NioEventLoopGroup
+NettyServer -> NioEventLoopGroup: workerGroup = new
+create ServerBootstrap
+NettyServer -> ServerBootstrap: serverBootstrap = new
+
+note over NettyServer
+    config the server such as group, channel, options
+    config the child handler:
+        NettyDecoderHandler
+        NettyEncoderHandler
+        NettyServerInvokeHandler
+end note
+
+NettyServer -> ServerBootstrap: bind(port).sync().channel()
+
+== Initialize RegisterCenter ==
+NettyServerTest -> RegisterCenter: singleton()
+
+== Create Service Provider and register to ZooKeeper ==
+NettyServerTest -> NettyServerTest: buildProviderServiceInfos(IServiceAForTest.class, 1)
+create ProviderService
+NettyServerTest -> ProviderService: new
+NettyServerTest -> RegisterCenter: registerProvider(buildProviderServiceInfos())
+note over RegisterCenter
+    connect to zookeeper and register the service
+    create zookeeper namespace and app namespace
+    create service provider
+    create service node
+    subscribe to the change of the service and update the local cache
+end note
+== Retrieve the map of Service Provider ==
+NettyServerTest -> RegisterCenter: getProviderServiceMap()
+
+@enduml

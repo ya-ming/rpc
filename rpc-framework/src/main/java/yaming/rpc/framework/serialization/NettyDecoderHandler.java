@@ -22,6 +22,7 @@ public class NettyDecoderHandler extends ByteToMessageDecoder {
 
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        System.out.println("NettyDecoderHandler::decode() " + in);
         // get the length in the header of the message
         if (in.readableBytes() < 4) {
             return;

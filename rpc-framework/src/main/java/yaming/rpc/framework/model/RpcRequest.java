@@ -1,6 +1,8 @@
 package yaming.rpc.framework.model;
 
-public class RpcRequest {
+import java.io.Serializable;
+
+public class RpcRequest implements Serializable {
     private String uniqueKey;
     // info of service provider
     private ProviderService providerService;

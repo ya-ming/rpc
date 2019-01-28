@@ -16,6 +16,7 @@ public class NettyEncoderHandler extends MessageToByteEncoder {
 
     @Override
     public void encode(ChannelHandlerContext ctx, Object in, ByteBuf out) throws Exception {
+        System.out.println("NettyEncoderHandler::encode() " + in);
         // serialize the object to byte array
         byte[] data = SerializerEngine.serialize(in, serializerType.getSerializeType());
         // write the length of the serialized object to the head of the message

@@ -2,9 +2,10 @@ package yaming.rpc.framework.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
-public class ProviderService {
+public class ProviderService implements Serializable {
     private Class<?> serviceItf;
     private transient Object serviceObject;
     @JsonIgnore
@@ -20,6 +21,21 @@ public class ProviderService {
     private String appKey;
     // server group
     private String groupName;
+
+    public ProviderService copy() {
+        ProviderService providerService = new ProviderService();
+        providerService.setServiceItf(serviceItf);
+        providerService.setServiceObject(serviceObject);
+        providerService.setServiceMethod(serviceMethod);
+        providerService.setServerIp(serverIp);
+        providerService.setServerPort(serverPort);
+        providerService.setTimeout(timeout);
+        providerService.setWeight(weight);
+        providerService.setWorkerThreads(workerThreads);
+        providerService.setAppKey(appKey);
+        providerService.setGroupName(groupName);
+        return providerService;
+    }
 
     public Class<?> getServiceItf() {
         return serviceItf;

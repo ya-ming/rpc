@@ -42,6 +42,7 @@ public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<RpcReq
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcRequest rpcRequest) throws Exception {
         if (ctx.channel().isWritable()) {
+            System.out.println("NettyServerInvokeHandler::channelRead0" + "retrieve the info of service provider from the Request");
             // retrieve the info of service provider from the Request
             ProviderService metaDataModel = rpcRequest.getProviderService();
             long consumeTimeOut = rpcRequest.getInvokeTimeout();
@@ -81,6 +82,7 @@ public class NettyServerInvokeHandler extends SimpleChannelInboundHandler<RpcReq
                 Method method = localProviderCache.getServiceMethod();
                 acquire = semaphore.tryAcquire(consumeTimeOut, TimeUnit.MILLISECONDS);
                 if (acquire) {
+                    System.out.println("NettyServerInvokeHandler::channelRead0" + "method.invoke");
                     result = method.invoke(serviceObject, rpcRequest.getArgs());
                 }
             } catch (Exception e) {
