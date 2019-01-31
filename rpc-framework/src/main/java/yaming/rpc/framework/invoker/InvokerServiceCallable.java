@@ -1,4 +1,4 @@
-package yaming.rpc.framework.Revoker;
+package yaming.rpc.framework.invoker;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -15,35 +15,35 @@ import java.util.concurrent.TimeUnit;
 /**
  * the thread to initiate request to the netty server
  */
-public class RevokerServiceCallable implements Callable<RpcResponse> {
+public class InvokerServiceCallable implements Callable<RpcResponse> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RevokerServiceCallable.class);
+    private static final Logger logger = LoggerFactory.getLogger(InvokerServiceCallable.class);
 
     private Channel channel;
     private InetSocketAddress inetSocketAddress;
     private RpcRequest request;
 
-    public static RevokerServiceCallable of(InetSocketAddress inetSocketAddress, RpcRequest request) {
-        return new RevokerServiceCallable(inetSocketAddress, request);
+    public static InvokerServiceCallable of(InetSocketAddress inetSocketAddress, RpcRequest request) {
+        return new InvokerServiceCallable(inetSocketAddress, request);
     }
 
 
-    public RevokerServiceCallable(InetSocketAddress inetSocketAddress, RpcRequest request) {
+    public InvokerServiceCallable(InetSocketAddress inetSocketAddress, RpcRequest request) {
         this.inetSocketAddress = inetSocketAddress;
         this.request = request;
     }
 
     @Override
     public RpcResponse call() throws Exception {
-        System.out.println("RevokerServiceCallable::call() request = " + request);
+        System.out.println("InvokerServiceCallable::call() request = " + request);
         // init the response holder, save the RpcResponseWrapper to responseMap based on unique key of this invoke
-        RevokerResponseHolder.initResponseData(request.getUniqueKey());
+        InvokerResponseHolder.initResponseData(request.getUniqueKey());
         // acquire the netty channel blocking queue of the target address
         ArrayBlockingQueue<Channel> blockingQueue = NettyChannelPoolFactory.channelPoolFactoryInstance().acquire(inetSocketAddress);
         try {
             if (channel == null) {
                 // get a netty channel from the blocking queue
-                System.out.println("RevokerServiceCallable::call() get a netty channel from the blocking queue");
+                System.out.println("InvokerServiceCallable::call() get a netty channel from the blocking queue");
                 channel = blockingQueue.poll(request.getInvokeTimeout(), TimeUnit.MILLISECONDS);
             }
 
@@ -58,14 +58,14 @@ public class RevokerServiceCallable implements Callable<RpcResponse> {
             }
 
             // write and flush the request into netty channel, invoke the async call
-            System.out.println("RevokerServiceCallable::call() write and flush the request into netty channel, invoke the async call");
+            System.out.println("InvokerServiceCallable::call() write and flush the request into netty channel, invoke the async call");
             ChannelFuture channelFuture = channel.writeAndFlush(request);
             channelFuture.syncUninterruptibly();
 
             // retrieve the response from the response holder and set invoke timeout timer
-            System.out.println("RevokerServiceCallable::call() retrieve the response from the response holder and set invoke timeout timer");
+            System.out.println("InvokerServiceCallable::call() retrieve the response from the response holder and set invoke timeout timer");
             long invokeTimeout = request.getInvokeTimeout();
-            return RevokerResponseHolder.getValue(request.getUniqueKey(), invokeTimeout);
+            return InvokerResponseHolder.getValue(request.getUniqueKey(), invokeTimeout);
         } catch (Exception e) {
             logger.error("service invoke error.", e);
         } finally {

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class RegisterCenterInvokerTest {
     public static void main(String[] args) throws InterruptedException {
-        // test the consumer interface
+        // yaming.rpc.framework.test the consumer interface
         IRegisterCenter4Invoker registerCenter4Consumer = RegisterCenter.singleton();
         registerCenter4Consumer.initProviderMap("appKey-1", "default");
         Map<String, List<ProviderService>> serviceMetaDataMap4Consumer = registerCenter4Consumer.getServiceMetaDataMap4Consumer();

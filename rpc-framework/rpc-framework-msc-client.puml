@@ -2,12 +2,12 @@
 == Initialization ==
 
 == Initialize RegisterCenter ==
-RevokerFactoryTest -> RegisterCenter: singleton()
+InvokerFactoryTest -> RegisterCenter: singleton()
 
 == Fetch the list of service provider from the zookeeper ==
 
-RevokerFactoryTest -> RegisterCenter: initProviderMap(("appKey-1", "default"))
-RevokerFactoryTest -> RegisterCenter: fetchOrUpdateServiceMetaData(remoteAppKey, groupName)
+InvokerFactoryTest -> RegisterCenter: initProviderMap(("appKey-1", "default"))
+InvokerFactoryTest -> RegisterCenter: fetchOrUpdateServiceMetaData(remoteAppKey, groupName)
 RegisterCenter -> RegisterCenter: serviceMetaDataMap4Consumer.putAll()
 note over RegisterCenter
     connect to zookeeper
@@ -15,10 +15,10 @@ note over RegisterCenter
     fetch information of all the service provider such and IP/Port/Weight/WorkerThreads
 end note
 
-RevokerFactoryTest -> RegisterCenter: getServiceMetaDataMap4Consumer()
+InvokerFactoryTest -> RegisterCenter: getServiceMetaDataMap4Consumer()
 
 == Init Netty Channel ==
-RevokerFactoryTest -> NettyChannelPoolFactory: channelPoolFactoryInstance().initChannelPoolFactory(serviceMetaDataMap4Consumer)
+InvokerFactoryTest -> NettyChannelPoolFactory: channelPoolFactoryInstance().initChannelPoolFactory(serviceMetaDataMap4Consumer)
 note over NettyChannelPoolFactory
     save info of service provider into serviceMetaDataList
     retrieve addresses of service providers
@@ -30,19 +30,19 @@ note over NettyChannelPoolFactory
     store the blocking into channelPoolMap
 end note
 == Get the proxy of service provider ==
-RevokerFactoryTest -> RevokerProxyBeanFactory: singleton(IServiceAForTest.class, 3000, "")
-RevokerFactoryTest -> RevokerProxyBeanFactory: serviceObject = proxyFactory.getProxy();
+InvokerFactoryTest -> InvokerProxyBeanFactory: singleton(IServiceAForTest.class, 3000, "")
+InvokerFactoryTest -> InvokerProxyBeanFactory: serviceObject = proxyFactory.getProxy();
 
 == Register Invoker ==
-RevokerFactoryTest -> RevokerFactoryTest: buildInvokerServiceInfo(IServiceAForTest.class)
-RevokerFactoryTest -> RegisterCenter: registerInvoker()
+InvokerFactoryTest -> InvokerFactoryTest: buildInvokerServiceInfo(IServiceAForTest.class)
+InvokerFactoryTest -> RegisterCenter: registerInvoker()
 note over RegisterCenter: register the service in the zookeeper
 
 == Invoke the RPC service ==
-RevokerFactoryTest -> RevokerProxyBeanFactory: invoke(serviceObject, IServiceAForTest.class.getMethod("methodA"), null);
-RevokerProxyBeanFactory -> RegisterCenter: singleton()
-RevokerProxyBeanFactory -> RegisterCenter: getServiceMetaDataMap4Consumer().get(serviceKey)
-note over RevokerProxyBeanFactory
+InvokerFactoryTest -> InvokerProxyBeanFactory: invoke(serviceObject, IServiceAForTest.class.getMethod("methodA"), null);
+InvokerProxyBeanFactory -> RegisterCenter: singleton()
+InvokerProxyBeanFactory -> RegisterCenter: getServiceMetaDataMap4Consumer().get(serviceKey)
+note over InvokerProxyBeanFactory
     make a copy of the service provider
     set the 'method' and 'interface' to be used for this invoke
     create RpcRequest, it contains all the info needed for the RPC call
@@ -53,11 +53,11 @@ note over RevokerProxyBeanFactory
         set args for the invoke
 end note
 
-RevokerProxyBeanFactory -> Executors: newFixedThreadPool(threadWorkerNumber)
-RevokerProxyBeanFactory -> Executors: Future<RpcResponse> responseFuture = submit(RevokerServiceCallable.of(inetSocketAddress, request))
+InvokerProxyBeanFactory -> Executors: newFixedThreadPool(threadWorkerNumber)
+InvokerProxyBeanFactory -> Executors: Future<RpcResponse> responseFuture = submit(InvokerServiceCallable.of(inetSocketAddress, request))
 
-RevokerServiceCallable -> RevokerServiceCallable: call()
-note over RevokerServiceCallable
+InvokerServiceCallable -> InvokerServiceCallable: call()
+note over InvokerServiceCallable
     init the response holder, save the RpcResponseWrapper to responseMap based on unique key of this invoke
     acquire the netty channel blocking queue of the target address
     get a netty channel from the blocking queue
@@ -65,6 +65,6 @@ note over RevokerServiceCallable
     retrieve the response from the response holder and set invoke timeout timer
     release the netty channel then it can be reused for other RPC
 end note
-RevokerProxyBeanFactory -> responseFuture: get(request.getInvokeTimeout(), TimeUnit.MILLISECONDS)
-RevokerProxyBeanFactory --> RevokerFactoryTest: return response.getResult()
+InvokerProxyBeanFactory -> responseFuture: get(request.getInvokeTimeout(), TimeUnit.MILLISECONDS)
+InvokerProxyBeanFactory --> InvokerFactoryTest: return response.getResult()
 @enduml

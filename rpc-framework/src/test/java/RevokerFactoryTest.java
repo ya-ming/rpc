@@ -1,6 +1,6 @@
 import org.apache.commons.collections.MapUtils;
-import yaming.rpc.framework.Revoker.NettyChannelPoolFactory;
-import yaming.rpc.framework.Revoker.RevokerProxyBeanFactory;
+import yaming.rpc.framework.invoker.NettyChannelPoolFactory;
+import yaming.rpc.framework.invoker.InvokerProxyBeanFactory;
 import yaming.rpc.framework.model.InvokerService;
 import yaming.rpc.framework.model.ProviderService;
 import yaming.rpc.framework.zookeeper.IRegisterCenter4Invoker;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class RevokerFactoryTest {
     public static void main(String[] args) throws Throwable {
-        // test the consumer interface
+        // yaming.rpc.framework.test the consumer interface
         IRegisterCenter4Invoker registerCenter4Consumer = RegisterCenter.singleton();
         registerCenter4Consumer.initProviderMap("appKey-1", "default");
 
@@ -24,7 +24,7 @@ public class RevokerFactoryTest {
         NettyChannelPoolFactory.channelPoolFactoryInstance().initChannelPoolFactory(serviceMetaDataMap4Consumer);
 
         // get the proxy of service provider
-        RevokerProxyBeanFactory proxyFactory = RevokerProxyBeanFactory.singleton(IServiceAForTest.class, 3000, "");
+        InvokerProxyBeanFactory proxyFactory = InvokerProxyBeanFactory.singleton(IServiceAForTest.class, 3000, "");
         Object serviceObject = proxyFactory.getProxy();
 
         registerCenter4Consumer.registerInvoker(buildInvokerServiceInfo(IServiceAForTest.class));
@@ -32,7 +32,7 @@ public class RevokerFactoryTest {
         Object result = proxyFactory.invoke(serviceObject, IServiceAForTest.class.getMethod("methodA"), null);
         System.out.println(result);
 
-        result = proxyFactory.invoke(serviceObject, IServiceAForTest.class.getMethod("methodB", String.class), new Object[]{"this is a test"});
+        result = proxyFactory.invoke(serviceObject, IServiceAForTest.class.getMethod("methodB", String.class), new Object[]{"this is a yaming.rpc.framework.test"});
         System.out.println(result);
 
 

@@ -1,4 +1,4 @@
-package yaming.rpc.framework.Revoker;
+package yaming.rpc.framework.invoker;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

@@ -1,4 +1,4 @@
-package yaming.rpc.framework.Revoker;
+package yaming.rpc.framework.invoker;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -24,7 +24,7 @@ public class NettyClientInvokeHandler extends SimpleChannelInboundHandler<RpcRes
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcResponse response) throws Exception {
         // store the async-response into RevokerResponseHolder, let the invoker to retrieve
-        RevokerResponseHolder.putResultValue(response);
+        InvokerResponseHolder.putResultValue(response);
     }
 
 

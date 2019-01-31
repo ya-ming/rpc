@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.3.18</spring.version>
+        <spring.version>4.3.18.RELEASE</spring.version>
         <aspectj.version>1.8.0</aspectj.version>
         <guava.version>19.0</guava.version>
         <fastjson.version>1.2.29</fastjson.version>
@@ -157,7 +157,7 @@
         </dependency>
 
 
-        <!-- spring -->
+        <!-- yaming.rpc.framework.test -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
@@ -221,7 +221,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
-            <scope>test</scope>
+            <scope>yaming.rpc.framework.test</scope>
         </dependency>
 
     </dependencies>

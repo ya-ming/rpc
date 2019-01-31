@@ -1,4 +1,4 @@
-package yaming.rpc.framework.Revoker;
+package yaming.rpc.framework.invoker;
 
 import com.google.common.collect.Maps;
 import yaming.rpc.framework.model.RpcResponse;
@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class RevokerResponseHolder {
+public class InvokerResponseHolder {
     // map to store the response returned by the service
     private static final Map<String, RpcResponseWrapper> responseMap = Maps.newConcurrentMap();
     // executor for cleaning up the expired response

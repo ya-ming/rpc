@@ -1,4 +1,4 @@
-package yaming.rpc.framework.Revoker;
+package yaming.rpc.framework.invoker;
 
 import yaming.rpc.framework.model.ProviderService;
 import yaming.rpc.framework.model.RpcRequest;
@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class RevokerProxyBeanFactory implements InvocationHandler {
+public class InvokerProxyBeanFactory implements InvocationHandler {
 
     private ExecutorService fixedThreadPool = null;
 
@@ -31,7 +31,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
     private String clusterStrategy;
 
 
-    public RevokerProxyBeanFactory(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) {
+    public InvokerProxyBeanFactory(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) {
         this.targetInterface = targetInterface;
         this.consumeTimeout = consumeTimeout;
         this.clusterStrategy = clusterStrategy;
@@ -70,7 +70,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
         try {
             // create thread pool for initiate the rpc
             if (fixedThreadPool == null) {
-                synchronized (RevokerProxyBeanFactory.class) {
+                synchronized (InvokerProxyBeanFactory.class) {
                     if (null == fixedThreadPool) {
                         fixedThreadPool = Executors.newFixedThreadPool(threadWorkerNumber);
                     }
@@ -81,7 +81,7 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
             int serverPort = request.getProviderService().getServerPort();
             InetSocketAddress inetSocketAddress = new InetSocketAddress(serverIp, serverPort);
             // submit the thread to fixedThreadPoll, invoke the rpc
-            Future<RpcResponse> responseFuture = fixedThreadPool.submit(RevokerServiceCallable.of(inetSocketAddress, request));
+            Future<RpcResponse> responseFuture = fixedThreadPool.submit(InvokerServiceCallable.of(inetSocketAddress, request));
             // retrieve the response from the rpc
             RpcResponse response = responseFuture.get(request.getInvokeTimeout(), TimeUnit.MILLISECONDS);
             if (response != null) {
@@ -99,13 +99,13 @@ public class RevokerProxyBeanFactory implements InvocationHandler {
     }
 
 
-    private static volatile RevokerProxyBeanFactory singleton;
+    private static volatile InvokerProxyBeanFactory singleton;
 
-    public static RevokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) throws Exception {
+    public static InvokerProxyBeanFactory singleton(Class<?> targetInterface, int consumeTimeout, String clusterStrategy) throws Exception {
         if (null == singleton) {
-            synchronized (RevokerProxyBeanFactory.class) {
+            synchronized (InvokerProxyBeanFactory.class) {
                 if (null == singleton) {
-                    singleton = new RevokerProxyBeanFactory(targetInterface, consumeTimeout, clusterStrategy);
+                    singleton = new InvokerProxyBeanFactory(targetInterface, consumeTimeout, clusterStrategy);
                 }
             }
         }

@@ -46,7 +46,7 @@ package "provider" #DDDDDD {
     }
 }
 
-package "Revoker" #DDDDDD {
+package "Invoker" #DDDDDD {
     class NettyChannelPoolFactory {
     + void initChannelPoolFactory()
     + ArrayBlockingQueue<Channel> acquire(InetSocketAddress socketAddress
@@ -58,26 +58,26 @@ package "Revoker" #DDDDDD {
 
     }
 
-    class RevokerProxyBeanFactory {
+    class InvokerProxyBeanFactory {
     + Object invoke(Object proxy, Method method, Object[] args)
     }
 
-    class RevokerResponseHolder {
+    class InvokerResponseHolder {
     + static void initResponseData(String requestUniqueKey)
     + static void putResultValue(RpcResponse response)
     + static RpcResponse getValue(String requestUniqueKey, long timeout)
     }
 
-    class RevokerServiceCallable {
+    class InvokerServiceCallable {
     + RpcResponse call()
     }
 }
 
-ProviderService <|.. RevokerProxyBeanFactory
-RpcRequest <|.. RevokerProxyBeanFactory
-RpcResponse <|.. RevokerProxyBeanFactory
-IRegisterCenter4Invoker <|.. RevokerProxyBeanFactory
-RegisterCenter <|.. RevokerProxyBeanFactory
+ProviderService <|.. InvokerProxyBeanFactory
+RpcRequest <|.. InvokerProxyBeanFactory
+RpcResponse <|.. InvokerProxyBeanFactory
+IRegisterCenter4Invoker <|.. InvokerProxyBeanFactory
+RegisterCenter <|.. InvokerProxyBeanFactory
 
 ProviderService <|.. NettyChannelPoolFactory
 RpcResponse <|.. NettyChannelPoolFactory
@@ -87,11 +87,11 @@ NettyClientInvokeHandler <|.. NettyChannelPoolFactory
 
 SimpleChannelInboundHandler <|-- NettyClientInvokeHandler
 
-RpcResponse <|.. RevokerResponseHolder
-RpcResponseWrapper <|.. RevokerResponseHolder
+RpcResponse <|.. InvokerResponseHolder
+RpcResponseWrapper <|.. InvokerResponseHolder
 
-RpcRequest <|.. RevokerResponseHolder
-RpcResponse <|.. RevokerResponseHolder
+RpcRequest <|.. InvokerResponseHolder
+RpcResponse <|.. InvokerResponseHolder
 
 
 class NettyDecoderHandler {

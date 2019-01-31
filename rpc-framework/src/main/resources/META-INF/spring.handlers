@@ -1,0 +1,2 @@
+http\://www.rpc-framework.com/schema/rpc-service=yaming.rpc.framework.spring.RpcRemoteServiceNamespaceHandler
+http\://www.rpc-framework.com/schema/rpc-reference=yaming.rpc.framework.spring.RpcRemoteReferenceNamespaceHandler

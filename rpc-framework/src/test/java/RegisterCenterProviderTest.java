@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class RegisterCenterProviderTest {
     public static void main(String[] args) throws InterruptedException {
-        // test the provider interface
+        // yaming.rpc.framework.test the provider interface
         RegisterCenter registerCenter = RegisterCenter.singleton();
 
         registerCenter.registerProvider(buildProviderServiceInfos(IServiceAForTest.class, 1));

@@ -10,7 +10,7 @@ import java.util.Map;
 public class NettyServerTest {
     public static void main(String[] args) throws InterruptedException {
         NettyServer.singleton().start(Integer.parseInt("8801"));
-        // test the provider interface
+        // yaming.rpc.framework.test the provider interface
         RegisterCenter registerCenter = RegisterCenter.singleton();
 
         registerCenter.registerProvider(buildProviderServiceInfos(IServiceAForTest.class, 1));

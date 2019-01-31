@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:RpcServer="http://www.rpc-framework.com/schema/rpc-service"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.rpc-framework.com/schema/rpc-service http://www.rpc-framework.com/schema/rpc-service.xsd">
+
+    <!-- 发布远程服务 -->
+    <bean id="helloService" class="yaming.rpc.test.HelloServiceImpl"/>
+    <RpcServer:service id="helloServiceRegister"
+                        interface="yaming.rpc.test.HelloService"
+                        ref="helloService"
+                        groupName="default"
+                        weight="2"
+                        appKey="ares"
+                        workerThreads="100"
+                        serverPort="8081"
+                        timeout="600"/>
+
+
+</beans>
